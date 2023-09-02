@@ -1,7 +1,12 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cookieParser = require("cookie-parser");
 
 const app = express();
+
+// USING MIDDLEWARE
+app.use(express.json());
+app.use(cookieParser()); // Use cookie-parser middleware
 
 mongoose
   .connect("mongodb://127.0.0.1:27017", {
@@ -22,19 +27,24 @@ app.get("/", (req, res) => {
 });
 
 app.get("/users/all", async (req, res) => {
-  res.json({
+  const users = await User.find({});
+
+  //this is an industry standard when making an api
+  res.status(201).json({
+    // it is a good practice to provide status code in response
     success: true,
-    users: [],
+    users,
   });
 });
 
 app.post("/users/new", async (req, res) => {
+  const { name, email, password } = req.body;
   const users = await User.create({
-    name: "ajmaax",
-    email: "hello@gmail.com",
-    password: "helloworld",
+    name,
+    email,
+    password,
   });
-  res.json({
+  res.cookie("tempi", "lol").json({
     success: true,
     users: [],
   });
