@@ -26,6 +26,21 @@ app.get("/", (req, res) => {
   res.send("NODE API'S");
 });
 
+app.get("/userid/:id", async (req, res) => {
+  const { id } = req.params;
+
+  // const users = await User.findById(id);
+
+  const user = await User.findById(id);
+
+  console.log(req.params);
+
+  res.json({
+    success: true,
+    user,
+  });
+});
+
 app.get("/users/all", async (req, res) => {
   const users = await User.find({});
 
