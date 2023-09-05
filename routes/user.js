@@ -1,44 +1,16 @@
 import express from "express";
 import { User } from "../models/user.js";
+import {
+  getAllUsers,
+  getUserId,
+  register,
+} from "../controllers/userController.js";
 const router = express.Router();
 
-router.get("/users/all", async (req, res) => {
-  const users = await User.find({});
+router.get("/all", getAllUsers);
 
-  //this is an industry standard when making an api
-  res.status(201).json({
-    // it is a good practice to provide status code in response
-    success: true,
-    users,
-  });
-});
+router.get("/userid/:id", getUserId);
 
-router.get("/userid/:id", async (req, res) => {
-  const { id } = req.params;
-
-  // const users = await User.findById(id);
-
-  const user = await User.findById(id);
-
-  console.log(req.params);
-
-  res.json({
-    success: true,
-    user,
-  });
-});
-
-router.post("/users/new", async (req, res) => {
-  const { name, email, password } = req.body;
-  const users = await User.create({
-    name,
-    email,
-    password,
-  });
-  res.cookie("tempi", "lol").json({
-    success: true,
-    users: [],
-  });
-});
+router.post("/new", register);
 
 export default router;

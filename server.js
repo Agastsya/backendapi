@@ -2,26 +2,27 @@ import express from "express";
 import mongoose from "mongoose";
 import cookieParser from "cookie-parser";
 import userRouter from "./routes/user.js";
-import { User } from "./models/user.js";
+import { connectDB } from "./data/database.js";
+import { config } from "dotenv";
+
+config({
+  path: "./data/config.env",
+});
 
 const app = express();
 const router = express.Router();
 
 // USING MIDDLEWARE
 app.use(express.json());
-app.use(userRouter); // Use cookie-parser middleware
+app.use("/users", userRouter); // Use cookie-parser middleware
 
-mongoose
-  .connect("mongodb://127.0.0.1:27017", {
-    dbName: "backendapi",
-  })
-  .then(() => console.log("Database Connected"))
-  .catch((e) => console.log(e));
+//CONNECTING TO DB USING MONGOOSE
+connectDB();
 
 app.get("/", (req, res) => {
   res.send("NODE API'S");
 });
 
-app.listen(3000, () => {
+app.listen(process.env.PORT, () => {
   console.log("Server is up and running");
 });
