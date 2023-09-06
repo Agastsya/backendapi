@@ -14,7 +14,7 @@ const router = express.Router();
 
 // USING MIDDLEWARE
 app.use(express.json());
-app.use("/users", userRouter); // Use cookie-parser middleware
+app.use("/api/v1/users", userRouter); // Use cookie-parser middleware
 
 //CONNECTING TO DB USING MONGOOSE
 connectDB();
