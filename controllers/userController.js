@@ -48,23 +48,21 @@ export const register = async (req, res) => {
 };
 
 export const getMyProfile = async (req, res) => {
-  const { token } = req.cookies;
-
-  if (!token) {
-    return res.status(404).json({
-      success: false,
-      messge: "Not Logged In",
-    });
-  }
-
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-  const user = await User.findById(decoded._id);
-
   res.status(200).json({
     success: true,
-    user,
+    user: req.user,
   });
 };
 
-export const getUserId = async (req, res) => {};
+export const logout = async (req, res) => {
+  res
+    .cookie("token", "", {
+      expires: new Date(Date.now()),
+    })
+    .json({
+      success: "true",
+      message: "logged out",
+    });
+};
+
+export const getUserId = () => {};
