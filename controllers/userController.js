@@ -47,4 +47,24 @@ export const register = async (req, res) => {
   sendCookie(user, res, "Registered Successfully", 201);
 };
 
+export const getMyProfile = async (req, res) => {
+  const { token } = req.cookies;
+
+  if (!token) {
+    return res.status(404).json({
+      success: false,
+      messge: "Not Logged In",
+    });
+  }
+
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+
+  const user = await User.findById(decoded._id);
+
+  res.status(200).json({
+    success: true,
+    user,
+  });
+};
+
 export const getUserId = async (req, res) => {};
