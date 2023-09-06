@@ -25,3 +25,24 @@ export const getMyTask = async (req, res, next) => {
     tasks,
   });
 };
+
+export const updateTask = async (req, res, next) => {
+  const { id } = req.params;
+  const task = await Task.findById(id);
+  task.isCompleted = !task.isCompleted;
+  task.save();
+  res.status(200).json({
+    success: true,
+    message: "Task Updated",
+  });
+};
+
+export const deleteTask = async (req, res, next) => {
+  const { id } = req.params;
+  const task = Task.findById(id);
+  await task.deleteOne();
+  res.status(200).json({
+    success: true,
+    message: "Task Deleted",
+  });
+};
