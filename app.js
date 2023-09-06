@@ -5,6 +5,7 @@ import userRouter from "./routes/user.js";
 import taskRouter from "./routes/task.js";
 import { connectDB } from "./data/database.js";
 import { config } from "dotenv";
+import { errorHandler } from "./middlewares/error.js";
 
 config({
   path: "./data/config.env",
@@ -27,6 +28,8 @@ connectDB();
 app.get("/", (req, res) => {
   res.send("NODE API'S");
 });
+
+app.use(errorHandler);
 
 app.listen(process.env.PORT, () => {
   console.log("Server is up and running");

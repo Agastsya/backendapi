@@ -27,8 +27,10 @@ export const getMyTask = async (req, res, next) => {
 };
 
 export const updateTask = async (req, res, next) => {
-  const { id } = req.params;
-  const task = await Task.findById(id);
+  const task = await Task.findById(req.params.id);
+
+  if (!task) return next(new Error("Invalid ID"));
+
   task.isCompleted = !task.isCompleted;
   task.save();
   res.status(200).json({
@@ -38,9 +40,12 @@ export const updateTask = async (req, res, next) => {
 };
 
 export const deleteTask = async (req, res, next) => {
-  const { id } = req.params;
-  const task = Task.findById(id);
+  const task = await Task.findById(req.params.id);
+
+  if (!task) return next(new Error("Invalid ID"));
+
   await task.deleteOne();
+
   res.status(200).json({
     success: true,
     message: "Task Deleted",
