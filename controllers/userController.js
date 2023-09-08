@@ -10,12 +10,7 @@ export const login = async (req, res) => {
 
   const user = await User.findOne({ email }).select("+password");
 
-  if (!user) {
-    return res.status(404).json({
-      success: false,
-      message: "Account Doesn't Exists",
-    });
-  }
+  if (!task) return next(new Error("Account Doesn't Exist", 404));
 
   const isMatch = await bcrypt.compare(password, user.password);
 
@@ -34,11 +29,7 @@ export const register = async (req, res) => {
 
   const userStatus = await User.findOne({ email });
 
-  if (userStatus)
-    return res.status(404).json({
-      success: false,
-      message: "Account Already Exists",
-    });
+  if (!task) return next(new Error("Account Already Exists", 404));
 
   const hashedPassword = await bcrypt.hash(password, 10);
 

@@ -42,7 +42,7 @@ export const updateTask = async (req, res, next) => {
 export const deleteTask = async (req, res, next) => {
   const task = await Task.findById(req.params.id);
 
-  if (!task) return next(new Error("Invalid ID"));
+  if (!task) return next(new Error("Invalid ID", 404));
 
   await task.deleteOne();
 
