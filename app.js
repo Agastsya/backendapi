@@ -6,6 +6,7 @@ import taskRouter from "./routes/task.js";
 import { connectDB } from "./data/database.js";
 import { config } from "dotenv";
 import { errorHandler } from "./middlewares/error.js";
+import cors from "cors";
 
 config({
   path: "./data/config.env",
@@ -17,6 +18,13 @@ const router = express.Router();
 // USING MIDDLEWARE
 app.use(express.json());
 app.use(cookieParser());
+app.use(
+  cors({
+    origin: [process.env.FRONTEND_URL],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  })
+);
 
 //USING ROUTES
 app.use("/api/v1/users", userRouter); // Use cookie-parser middleware
